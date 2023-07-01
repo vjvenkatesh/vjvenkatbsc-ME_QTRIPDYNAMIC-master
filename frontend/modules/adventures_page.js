@@ -103,7 +103,6 @@ function addAdventureToDOM(adventures) {
     headDiv.className = "d-flex justify-content-between";
     const heading = document.createElement("h6");
     heading.textContent = `${ad.name}`;
-
     // Create the price element and set its text content
     const price = document.createElement("p");
     price.textContent = `₹${ad.costPerHead}`;
