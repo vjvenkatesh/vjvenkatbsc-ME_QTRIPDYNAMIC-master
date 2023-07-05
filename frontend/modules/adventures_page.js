@@ -74,7 +74,7 @@ function addAdventureToDOM(adventures) {
 
     // Create the anchor element with the href attribute
     const anchor = document.createElement("a");
-    anchor.href = `/frontend/pages/adventures/detail?adventure=${ad.id}`;
+    anchor.href = `/frontend/pages/adventures/detail/?adventure=${ad.id}`;
     anchor.id = ad.id;
 
     // Create the card div element with the specified classes
