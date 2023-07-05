@@ -261,3 +261,21 @@ input[type="number"] {
   padding: 16px;
   margin-bottom: 30px;
 }
+
+
+
+
+
+/*my style for single pill remove */
+.filter-self{
+  position: relative;
+  top:-15px;
+  left: -20px;
+  background-color: orange;
+  border: 2px solid rgb(197, 190, 190);
+  border-radius: 20px 20px 20px 20px;
+  width: 2%;
+  cursor: pointer;
+  text-align: center;
+  align-items: center;
+}

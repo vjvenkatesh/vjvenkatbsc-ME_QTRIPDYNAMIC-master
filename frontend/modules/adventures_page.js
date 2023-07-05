@@ -103,6 +103,7 @@ function addAdventureToDOM(adventures) {
     headDiv.className = "d-flex justify-content-between";
     const heading = document.createElement("h6");
     heading.textContent = `${ad.name}`;
+
     // Create the price element and set its text content
     const price = document.createElement("p");
     price.textContent = `₹${ad.costPerHead}`;
@@ -148,12 +149,32 @@ function addAdventureToDOM(adventures) {
 function filterByDuration(list, low, high) {
   // TODO: MODULE_FILTERS
   // 1. Filter adventures based on Duration and return filtered list
+  let filterDurationLists = list.filter((l) => {
+    if (l.duration >= low && l.duration <= high) {
+      return l;
+    }
+  })
+  return filterDurationLists;
 }
 
 //Implementation of filtering by category which takes in a list of adventures, list of categories to be filtered upon and returns a filtered list of adventures.
 function filterByCategory(list, categoryList) {
   // TODO: MODULE_FILTERS
   // 1. Filter adventures based on their Category and return filtered list
+  let FilterA=[];
+      
+ let CF= categoryList.forEach((p)=>{
+    let filteredList=list.filter((o)=>{        
+      if(o.category==p){
+        FilterA.push(o);
+        return o;
+      }
+    })
+  })
+  // let categoryFilter=categoryList.category;
+  
+  
+  return FilterA;
 }
 
 // filters object looks like this filters = { duration: "", category: [] };
@@ -167,15 +188,41 @@ function filterFunction(list, filters) {
   // TODO: MODULE_FILTERS
   // 1. Handle the 3 cases detailed in the comments above and return the filtered list of adventures
   // 2. Depending on which filters are needed, invoke the filterByDuration() and/or filterByCategory() methods
+  let filterCategoryList;
+  let filterDurationList;
+  let durationChar = filters.duration;
+  let durationArr = durationChar.split('-');
+  let low = durationArr[0];
+  let high = durationArr[1];
 
-  // Place holder for functionality to work in the Stubs
-  return list;
+
+  if (filters.category[0] == undefined && filters.duration == '') {
+    return list;
+  }
+  else if (filters.category[0] != undefined && filters.duration == "") {
+    filterCategoryList = filterByCategory(list, filters.category);
+    // Place holder for functionality to work in the Stubs
+    
+    return filterCategoryList;
+  }
+  else if (filters.duration != "" && filters.category[0] == undefined) {
+    
+    filterDurationList = filterByDuration(list, low, high);
+      return filterDurationList;
+  }
+  else if (filters.category != undefined && filters.duration != '') {
+    filterCategoryList = filterByCategory(list, filters.category);
+    filterDurationList = filterByDuration(list, low, high);
+    let mergedFilter=filterDurationList;
+      return mergedFilter;
+  }
 }
 
 //Implementation of localStorage API to save filters to local storage. This should get called everytime an onChange() happens in either of filter dropdowns
 function saveFiltersToLocalStorage(filters) {
   // TODO: MODULE_FILTERS
   // 1. Store the filters as a String to localStorage
+  localStorage.setItem("filters",JSON.stringify(filters));
 
   return true;
 }
@@ -184,9 +231,10 @@ function saveFiltersToLocalStorage(filters) {
 function getFiltersFromLocalStorage() {
   // TODO: MODULE_FILTERS
   // 1. Get the filters from localStorage and return String read as an object
+  let data=localStorage.getItem("filters");
 
   // Place holder for functionality to work in the Stubs
-  return null;
+  return JSON.parse(data);
 }
 
 //Implementation of DOM manipulation to add the following filters to DOM :
@@ -196,6 +244,44 @@ function getFiltersFromLocalStorage() {
 function generateFilterPillsAndUpdateDOM(filters) {
   // TODO: MODULE_FILTERS
   // 1. Use the filters given as input, update the Duration Filter value and Generate Category Pills
+  let categoryArray = filters.category;
+  let filterPills = document.getElementById("category-list");
+  // let p=document.createElement("p");
+  // p.setAttribute("class","category-filter");
+  categoryArray.map((category) => {
+    filterPills.innerHTML += `<p class="category-filter ${category}">${category}</p>`;
+    // <span class="filter-self" id="${category}" onclick="removeByCategoryId(this.id)">x</span>
+  })
+
+  console.log(filters.category);
+ 
+}
+
+
+///optional implementation to remove single pills
+function removeByCategoryId(spanId) {
+
+  let data=localStorage.getItem("filters");
+  let jData=JSON.parse(data);
+  console.log("ddjhd json data ",jData);
+  let ind=jData.category.indexOf(spanId);
+  jData.category.splice(ind,1);
+  localStorage.setItem("filters",JSON.stringify(jData));
+
+
+  //removing the filter pop and from filter array.
+  let parentP = document.getElementsByClassName(spanId);
+  let parentSpan = document.getElementById(spanId);
+  parentP.textContent = "";
+  parentSpan.style.display = "none";
+  let index=filter.category.indexOf(spanId);
+  console.log(index)
+  filter.category.splice(index,1);
+  console.log(filter);
+  for (var i = 0; i < parentP.length; i++) {
+    // Set the CSS display property to "none"
+    parentP[i].style.display = "none";
+  }
 }
 export {
   getCityFromURL,
@@ -207,4 +293,5 @@ export {
   saveFiltersToLocalStorage,
   getFiltersFromLocalStorage,
   generateFilterPillsAndUpdateDOM,
+  removeByCategoryId,
 };
