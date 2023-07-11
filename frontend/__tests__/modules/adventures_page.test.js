@@ -358,7 +358,4 @@ describe("Adventure Page Tests", function () {
 
     expect(document.getElementById("category-list").children.length).toEqual(filters.category.length);    
   });
-
-
-
 });
