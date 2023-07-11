@@ -1,4 +1,4 @@
 
-const config = { backendEndpoint: "http://localhost:8082" };
+const config = { backendEndpoint: "https://qtrip-dynamic-venkat.onrender.com" };
 
 export default config;
